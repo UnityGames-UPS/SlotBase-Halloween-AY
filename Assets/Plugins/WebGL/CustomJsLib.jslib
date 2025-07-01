@@ -48,7 +48,8 @@ mergeInto(LibraryManager.library, {
             }
           });
         }
-        window.parent.postMessage(message, "*");
+       // window.parent.postMessage(message, "*");
+       window.parent.dispatchReactUnityEvent(message);
       }
     }
 });

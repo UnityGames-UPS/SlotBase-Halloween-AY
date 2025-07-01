@@ -3545,6 +3545,7 @@ MonoBehaviour:
   Skeliton: {fileID: 1066763378}
   audioController: {fileID: 3828329615797410143}
   value: 0
+  index: 1
 --- !u!1 &215013500
 GameObject:
   m_ObjectHideFlags: 0
@@ -7090,7 +7091,7 @@ MonoBehaviour:
   bonusdata: []
   JSManager: {fileID: 1476692586}
   _jsManager: {fileID: 500036493}
-  testToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NjU1MTA1MGJjMDc4ODcyMWUxYmEwMSIsInVzZXJuYW1lIjoiZGV2MDEiLCJyb2xlIjoicGxheWVyIiwiaWF0IjoxNzQyODgxNDI3LCJleHAiOjE3NDM0ODYyMjd9.BwX7nEd_avZ_6YyGiiTiaUk9AUtAOrY2CGgRqdeO1vA
+  testToken: e43033c23a4e4809b69857feb3fd968e
 --- !u!114 &500036493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8836,7 +8837,11 @@ MonoBehaviour:
   - {fileID: 786003789}
   - {fileID: 906441266}
   _audioManager: {fileID: 3828329615797410143}
-  CaseValues: 0000000000000000ffffffff00000000
+  CaseValues:
+  - 0
+  - 0
+  - 0
+  - 0
   TotalWin_text: {fileID: 1193262164}
 --- !u!4 &629985137
 Transform:
@@ -11030,6 +11035,7 @@ MonoBehaviour:
   Skeliton: {fileID: 1749125424}
   audioController: {fileID: 3828329615797410143}
   value: 0
+  index: 2
 --- !u!1 &808368029
 GameObject:
   m_ObjectHideFlags: 0
@@ -12914,6 +12920,7 @@ MonoBehaviour:
   Skeliton: {fileID: 1824644429}
   audioController: {fileID: 3828329615797410143}
   value: 0
+  index: 3
 --- !u!1 &907703933
 GameObject:
   m_ObjectHideFlags: 0
@@ -19065,7 +19072,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1357948651}
   m_OnClick:
     m_PersistentCalls:
@@ -19968,6 +19975,7 @@ MonoBehaviour:
   Skeliton: {fileID: 1399964419}
   audioController: {fileID: 3828329615797410143}
   value: 0
+  index: 0
 --- !u!1 &1407693555
 GameObject:
   m_ObjectHideFlags: 0

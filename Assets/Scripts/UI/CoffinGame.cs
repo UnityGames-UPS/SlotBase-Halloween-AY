@@ -17,6 +17,8 @@ public class CoffinGame : MonoBehaviour
     [SerializeField] private AudioController audioController;
     [SerializeField] private double value = 0;
 
+    [SerializeField]
+    int index =0;
     //internal bool isOpen;
 
     void Start()
@@ -50,7 +52,7 @@ public class CoffinGame : MonoBehaviour
 
     void PopulateCase()
     {
-        value = _bonusManager.GetValue();
+        value = _bonusManager.GetValue(index);
         if (value == 0)
         {
             text.text = "game over";

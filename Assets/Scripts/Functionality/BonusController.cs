@@ -17,7 +17,7 @@ public class BonusController : MonoBehaviour
     private AudioController _audioManager;
 
     [SerializeField]
-    private List<int> CaseValues;
+    private List<double> CaseValues;
 
     [SerializeField] private TMP_Text TotalWin_text;
 
@@ -28,7 +28,7 @@ public class BonusController : MonoBehaviour
     private double totalWin;
     internal double bet { get; private set; }
 
-    internal void GetCaseList(List<int> values, double betperline)
+    internal void GetCaseList(List<double> values, double betperline)
     {
         index = 0;
         CaseValues.Clear();
@@ -61,13 +61,14 @@ public class BonusController : MonoBehaviour
         if (Bonus_Object) Bonus_Object.SetActive(false);
     }
 
-    internal int GetValue()
+    internal double GetValue(int x)
     {
-        int value = 0;
+        slotManager.OnBonusCofinClicked(x);
+        double value = 0;
 
-        value = CaseValues[index];
+        value = CaseValues[x];
 
-        index++;
+      
 
         return value;
     }
