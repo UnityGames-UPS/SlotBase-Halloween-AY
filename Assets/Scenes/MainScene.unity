@@ -7091,7 +7091,7 @@ MonoBehaviour:
   bonusController: {fileID: 629985136}
   JSManager: {fileID: 1476692586}
   _jsManager: {fileID: 500036493}
-  testToken: 14fb4ff9decb4bbfbdcb8f54ed76aeb9
+  testToken: f8c7a21eacfa4d06984c0d8087d3a5db
 --- !u!114 &500036493
 MonoBehaviour:
   m_ObjectHideFlags: 0
