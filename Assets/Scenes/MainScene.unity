@@ -7088,10 +7088,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotManager: {fileID: 2046803210}
   uiManager: {fileID: 377874625}
-  bonusdata: []
+  bonusController: {fileID: 629985136}
   JSManager: {fileID: 1476692586}
   _jsManager: {fileID: 500036493}
-  testToken: e43033c23a4e4809b69857feb3fd968e
+  testToken: 14fb4ff9decb4bbfbdcb8f54ed76aeb9
 --- !u!114 &500036493
 MonoBehaviour:
   m_ObjectHideFlags: 0

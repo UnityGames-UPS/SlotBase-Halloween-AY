@@ -113,11 +113,6 @@ public class UIManager : MonoBehaviour
     //    StartCoroutine(LoadingRoutine());
     //}
 
-    private void Awake()
-    {
-        SimulateClickByDefault();
-    }
-
     private void Start()
     {
         if (PaytableExit_Button) PaytableExit_Button.onClick.RemoveAllListeners();
@@ -167,15 +162,6 @@ public class UIManager : MonoBehaviour
         if (MegaWinHideBtn) MegaWinHideBtn.onClick.AddListener(OnClickMegaWinHide);
 
         ResetInfoUI();
-    }
-
-    //HACK: Something To Do Here
-    private void SimulateClickByDefault()
-    {
-
-        Debug.Log("Awaken The Game...");
-        m_AwakeGameButton.onClick.AddListener(() => { Debug.Log("Called The Game..."); });
-        m_AwakeGameButton.onClick.Invoke();
     }
 
     internal void LowBalPopup()

@@ -21,30 +21,25 @@ public class BonusController : MonoBehaviour
 
     [SerializeField] private TMP_Text TotalWin_text;
 
-    int index = 0;
-
     internal bool isOpening;
     internal bool isFinished;
     private double totalWin;
     internal double bet { get; private set; }
-
-    internal void GetCaseList(List<double> values, double betperline)
+    internal bool WaitForBonusResult = true;
+    internal void StartBonusGame() // List<double> values, double betperline
     {
-        index = 0;
-        CaseValues.Clear();
-        CaseValues.TrimExcess();
-        CaseValues = values;
-        bet = betperline;
+        //CaseValues.Clear();
+        //CaseValues.TrimExcess();
+        //CaseValues = values;
+        //bet = betperline;
 
 
         StartBonus();
     }
 
     internal void setTotalWin(double amount) {
-        totalWin += amount * bet;
-
+        totalWin += amount;
         if (TotalWin_text) TotalWin_text.text = totalWin.ToString("f3");
-
     }
 
     internal void GameOver()
@@ -61,17 +56,12 @@ public class BonusController : MonoBehaviour
         if (Bonus_Object) Bonus_Object.SetActive(false);
     }
 
-    internal double GetValue(int x)
-    {
-        slotManager.OnBonusCofinClicked(x);
-        double value = 0;
-
-        value = CaseValues[x];
-
-      
-
-        return value;
-    }
+    //internal double GetValue(int x)
+    //{
+    //    //slotManager.OnBonusCofinClicked(x);
+    //    double value = CaseValues[x];
+    //    return value;
+    //}
 
     
 

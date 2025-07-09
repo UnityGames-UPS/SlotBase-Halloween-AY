@@ -383,13 +383,7 @@ public class SlotBehaviour : MonoBehaviour
       //  PayCalculator.SetButtonActive(SocketManager.InitialData.lines[LineCounter]);                           //hh
     }
 
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.Space) && SlotStart_Button.interactable)
-    //    {
-    //        StartSlots();
-    //    }
-    //}
+    
 
     internal void PopulateInitalSlots(int number, List<int> myvalues)
     {
@@ -404,22 +398,7 @@ public class SlotBehaviour : MonoBehaviour
 
     private void PopulateSlot(List<int> values, int number)
     {
-        // if (Slot_Objects[number]) Slot_Objects[number].SetActive(true);
-        // for (int i = 0; i < values.Count; i++)
-        // {
-        //     GameObject myImg = Instantiate(Image_Prefab, Slot_Transform[number]);
-        //     images[number].slotImages.Add(myImg.GetComponent<Image>());
-        //     images[number].slotImages[i].sprite = myImages[values[i]];
-        //     PopulateAnimationSprites(images[number].slotImages[i].GetComponent<ImageAnimation>(), values[i]);
-        // }
-        // for (int k = 0; k < 2; k++)
-        // {
-        //     GameObject mylastImg = Instantiate(Image_Prefab, Slot_Transform[number]);
-        //     images[number].slotImages.Add(mylastImg.GetComponent<Image>());
-        //     images[number].slotImages[images[number].slotImages.Count - 1].sprite = myImages[values[k]];
-        //     PopulateAnimationSprites(images[number].slotImages[images[number].slotImages.Count - 1].GetComponent<ImageAnimation>(), values[k]);
-        // }
-        // if (mainContainer_RT) LayoutRebuilder.ForceRebuildLayoutImmediate(mainContainer_RT);
+        
 
         GenerateMatrix(number);
     }
@@ -503,7 +482,6 @@ public class SlotBehaviour : MonoBehaviour
 
     private void OnApplicationFocus(bool focus)
     {
-        Debug.Log("<color=red><b>" + focus + "</b></color>");
         audioController.CheckFocusFunction(focus, CheckSpinAudio);
     }
 
@@ -520,8 +498,7 @@ public class SlotBehaviour : MonoBehaviour
             }
 
         }
-        // if (GhostLaughing_Object) GhostLaughing_Object.SetActive(false);
-        // if (GhostIdle_Object) GhostIdle_Object.SetActive(true);
+       
         StartCoroutine(GhostRoutine(true));
 
         if (GhostIdle_Anim) GhostIdle_Anim.StartAnimation();
@@ -611,7 +588,7 @@ public class SlotBehaviour : MonoBehaviour
             if (Balance_text) Balance_text.text = initAmount.ToString("f3");
         });
 
-        // if (Balance_text) Balance_text.text = balance.ToString();
+       
 
         SocketManager.AccumulateResult(BetCounter);
 
@@ -622,13 +599,12 @@ public class SlotBehaviour : MonoBehaviour
             for (int j = 0; j < 5; j++)
             {
                 int resultNum = int.Parse(SocketManager.ResultData.matrix[i][j]);
-                //print("resultNum: " + resultNum);
-                //print("image loc: " + j + " " + i);
+                
                 PopulateAnimationSprites(Tempimages[j].slotImages[i].GetComponent<ImageAnimation>(), resultNum);
                 Tempimages[j].slotImages[i].GetComponent<Image>().sprite = myImages[resultNum];
             }
         }
-
+        CheckForFeaturesAnimation();
         if (IsTurboOn )                                                      // changes
         {
 
@@ -690,8 +666,8 @@ public class SlotBehaviour : MonoBehaviour
 
         if (SocketManager.ResultData.bonus.istriggered)
         {
-            _bonusManager.GetCaseList(SocketManager.ResultData.bonus.result, SocketManager.InitialData.bets[BetCounter]);
-
+            //_bonusManager.GetCaseList(SocketManager.ResultData.bonus.result, SocketManager.InitialData.bets[BetCounter]);
+            _bonusManager.StartBonusGame();
         }
         else if (SocketManager.ResultData.payload.winAmount >= bet * 10 && SocketManager.ResultData.payload.winAmount < bet * 15)
         {
@@ -715,13 +691,10 @@ public class SlotBehaviour : MonoBehaviour
             audioController.PlayGhostAudio(1.3f);
             StartCoroutine(GhostRoutine(false));
             CheckPopups = false;
-
         }
         else
         {
-
             CheckPopups = false;
-
         }
 
         yield return new WaitUntil(() => !CheckPopups);
@@ -730,7 +703,6 @@ public class SlotBehaviour : MonoBehaviour
         if (TotalWin_text) TotalWin_text.text = SocketManager.ResultData.payload.winAmount.ToString("f3");
         if (Balance_text) Balance_text.text = SocketManager.PlayerData.balance.ToString("f3");
         CheckAndActivateGamble();
-        print("checkpopups, " + CheckPopups);
         if (!IsAutoSpin)
         {
             IsSpinning = false;
@@ -767,7 +739,41 @@ public class SlotBehaviour : MonoBehaviour
         }
 
     }
+    private void CheckForFeaturesAnimation()
+    {
+        bool playJackpot = false;
+        bool playScatter = false;
+        bool playBonus = false;
+        bool playFreespin = false;
+       
+        
+        if (SocketManager.ResultData.bonus.istriggered)
+        {
+            playBonus = true;
+        }
+        
+        PlayFeatureAnimation(playJackpot, playScatter, playBonus, playFreespin);
+    }
+    private void PlayFeatureAnimation(bool jackpot = false, bool scatter = false, bool bonus = false, bool freeSpin = false)
+    {
+        for (int i = 0; i < SocketManager.ResultData.matrix.Count; i++)
+        {
+            for (int j = 0; j < SocketManager.ResultData.matrix[i].Count; j++)
+            {
 
+                if (int.TryParse(SocketManager.ResultData.matrix[i][j], out int parsedNumber))
+                {
+                                  
+                    if (bonus && parsedNumber == 9)
+                    {
+                        StartGameAnimation(Tempimages[j].slotImages[i].gameObject);
+                    }
+                  
+                }
+
+            }
+        }
+    }
     internal void DeactivateGamble()
     {
         StopAutoSpin();
@@ -971,10 +977,10 @@ public class SlotBehaviour : MonoBehaviour
 
     }
     #endregion
-    internal void OnBonusCofinClicked(int index)
-    {
-        SocketManager.OnBonusCollect(index);
-    }
+    //internal void OnBonusCofinClicked(int index)
+    //{
+    //    SocketManager.OnBonusCollect(index);
+    //}
 
     internal void GambleCollect()
     {

@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -34,7 +34,6 @@ public class CoffinGame : MonoBehaviour
         if (Skeliton.gameObject.activeSelf) Skeliton.gameObject.SetActive(false);
         imageAnimation.gameObject.SetActive(true);
         Coffin.interactable = true;
-
     }
 
     void OpenCase()
@@ -44,43 +43,59 @@ public class CoffinGame : MonoBehaviour
         if (_bonusManager.isFinished) return;
 
         Coffin.interactable = false;
-        PopulateCase();
-        audioController.PlaySpinBonusAudio("bonus");
-        imageAnimation.StartAnimation();
+        //PopulateCase();
+        //imageAnimation.StartAnimation();
         StartCoroutine(setCase());
     }
 
-    void PopulateCase()
-    {
-        value = _bonusManager.GetValue(index);
-        if (value == 0)
-        {
-            text.text = "game over";
-        }
+    //void PopulateCase()
+    //{
+    //    value = _bonusManager.GetValue(index);
+    //    if (value == 0)
+    //    {
+    //        text.text = "game over";
+    //    }
 
-        else
-        {
-
-            text.text = string.Concat("You Won \n\n", (_bonusManager.bet*value).ToString());
-
-        }
-    }
+    //    else
+    //    {
+    //        text.text = string.Concat("You Won \n\n", (_bonusManager.bet*value).ToString());
+    //    }
+    //}
 
     IEnumerator setCase()
     {
         _bonusManager.isOpening = true;
+        audioController.PlaySpinBonusAudio("bonus");
+        _bonusManager.WaitForBonusResult = true;
+        SocketManager.OnBonusCollect(index);
+
+        Tween tween = transform.DOShakePosition(1f, new Vector3(15, 0, 0), 30, 90, true).SetLoops(-1, LoopType.Incremental);
+        yield return new WaitUntil(() => !_bonusManager.WaitForBonusResult);
+        tween.Kill();
+        imageAnimation.StartAnimation();
         yield return new WaitUntil(() => !imageAnimation.isplaying);
         yield return new WaitForSeconds(0.3f);
+
+        if (SocketManager.BonusData.payload.payout > 0)
+        {
+            audioController.PlayWLAudio("bonuswin");
+            text.text = string.Concat("You Won \n\n", SocketManager.BonusData.payload.winAmount.ToString("F2"));
+        }
+        else
+        {
+            text.text = "Game Over";
+            audioController.PlayWLAudio("bonuslose");
+        }
+
         text.gameObject.SetActive(true);
         text.fontMaterial.SetColor(ShaderUtilities.ID_GlowColor, text_color);
         _bonusManager.isOpening = false;
-        if(value>0)
-        audioController.PlayWLAudio("bonuswin");
-        else
-        audioController.PlayWLAudio("bonuslose");
-        _bonusManager.setTotalWin(value);
-        if (text.text == "game over")
+
+        _bonusManager.setTotalWin(SocketManager.BonusData.payload.winAmount);
+
+        if (SocketManager.BonusData.payload.payout == 0)
         {
+            SocketManager.ResultData.payload.winAmount = SocketManager.BonusData.payload.winAmount;
             _bonusManager.isFinished = true;
             Skeliton.gameObject.SetActive(true);
             yield return new WaitForSeconds(1f);
