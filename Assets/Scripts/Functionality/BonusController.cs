@@ -39,7 +39,7 @@ public class BonusController : MonoBehaviour
 
     internal void setTotalWin(double amount) {
         totalWin += amount;
-        if (TotalWin_text) TotalWin_text.text = totalWin.ToString("f3");
+        if (TotalWin_text) TotalWin_text.text = totalWin.ToString("f2");
     }
 
     internal void GameOver()

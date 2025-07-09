@@ -40,7 +40,7 @@ public class SocketIOManager : MonoBehaviour
 
     internal double GambleLimit = 0;
     private string SocketURI = null;
-    private string TestSocketURI = "https://sl3l5zz3-5000.inc1.devtunnels.ms/";
+    private string TestSocketURI = "http://localhost:5000/";
    // protected string TestSocketURI = "https://sl3l5zz3-5000.inc1.devtunnels.ms/";
     private const int maxReconnectionAttempts = 6;
     private readonly TimeSpan reconnectionDelay = TimeSpan.FromSeconds(10);

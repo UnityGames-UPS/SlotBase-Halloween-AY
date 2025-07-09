@@ -80,6 +80,7 @@ public class CoffinGame : MonoBehaviour
         {
             audioController.PlayWLAudio("bonuswin");
             text.text = string.Concat("You Won \n\n", SocketManager.BonusData.payload.winAmount.ToString("F2"));
+            _bonusManager.setTotalWin(SocketManager.BonusData.payload.winAmount);
         }
         else
         {
@@ -91,7 +92,6 @@ public class CoffinGame : MonoBehaviour
         text.fontMaterial.SetColor(ShaderUtilities.ID_GlowColor, text_color);
         _bonusManager.isOpening = false;
 
-        _bonusManager.setTotalWin(SocketManager.BonusData.payload.winAmount);
 
         if (SocketManager.BonusData.payload.payout == 0)
         {
