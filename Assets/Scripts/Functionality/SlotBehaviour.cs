@@ -237,7 +237,7 @@ public class SlotBehaviour : MonoBehaviour
         if (Lines_text) Lines_text.text = SocketManager.InitialData.lines[LineCounter].ToString();
        // PayCalculator.SetButtonActive(SocketManager.InitialData.lines[LineCounter]);         //hh
         if (TotalBet_text) TotalBet_text.text = (SocketManager.InitialData.bets[BetCounter] * SocketManager.InitialData.lines.Count).ToString();
-        if (TotalWin_text) TotalWin_text.text = 0.ToString("f3");
+        if (TotalWin_text) TotalWin_text.text = 0.ToString("f2");
         if (Balance_text) Balance_text.text = SocketManager.PlayerData.balance.ToString();
         if (BetperLine_text) BetperLine_text.text = (SocketManager.InitialData.bets[BetCounter]).ToString();
         currentBalance = SocketManager.PlayerData.balance;
@@ -502,7 +502,7 @@ public class SlotBehaviour : MonoBehaviour
         StartCoroutine(GhostRoutine(true));
 
         if (GhostIdle_Anim) GhostIdle_Anim.StartAnimation();
-        if(TotalWin_text) TotalWin_text.text = "0.000";
+
         if (audioController) audioController.PlayButtonAudio("spin");
         WinningsAnim(false);
         if (SlotStart_Button) SlotStart_Button.interactable = false;
@@ -710,8 +710,8 @@ public class SlotBehaviour : MonoBehaviour
         }
         else
         {
-            if (IsTurboOn) yield return new WaitForSeconds(1f);
-            else yield return new WaitForSeconds(2f);                                   // changes
+            if (!IsTurboOn) yield return new WaitForSeconds(1f);
+           // else yield return new WaitForSeconds(2f);                                   // changes
             IsSpinning = false;
         }
     }

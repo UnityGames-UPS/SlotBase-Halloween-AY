@@ -35,12 +35,12 @@ public class SocketIOManager : MonoBehaviour
 
     [SerializeField] internal JSFunctCalls JSManager;
 
-    [SerializeField]
-    internal JSHandler _jsManager;
+    //[SerializeField]
+//    internal JSHandler _jsManager;
 
     internal double GambleLimit = 0;
     private string SocketURI = null;
-    private string TestSocketURI = "http://localhost:5000/";
+    [SerializeField]private string TestSocketURI = "http://localhost:5000/";
    // protected string TestSocketURI = "https://sl3l5zz3-5000.inc1.devtunnels.ms/";
     private const int maxReconnectionAttempts = 6;
     private readonly TimeSpan reconnectionDelay = TimeSpan.FromSeconds(10);
@@ -411,7 +411,7 @@ public class SocketIOManager : MonoBehaviour
                     GambleData = myData;
                     PlayerData = myData.player;
                     isResultdone = true;
-                    UpdateUiOnResult(myData);
+                   // UpdateUiOnResult(myData);
                     break;
                 }
             case "gambleDraw":

@@ -101,6 +101,7 @@ public class GambleController : MonoBehaviour
     {
         isOut = false;
         if (GambleEnd_Object) GambleEnd_Object.SetActive(false); // Hide end screen
+        CardIntractable(true);
 
         if (!isRepeat)
             isAutoSpinOn = slotController.IsAutoSpin;
@@ -193,13 +194,9 @@ public class GambleController : MonoBehaviour
         }
     }
     // Compute the card sprites based on the received message
-    private void ComputeCards()
+    internal void ComputeCards()
     {
-        //dealerCard = new cardStruct();
-        //playerCard = new cardStruct();
-        //spare1Card = new cardStruct();
-        //spare2Card = new cardStruct();
-
+        
         dealerCard = ChoseARandomeCard(socketManager.GambleData.payload.cards.dealerCard - 1);
         playerCard = ChoseARandomeCard(socketManager.GambleData.payload.cards.playerCard - 1);
         spare1Card = FindUniqueCard();
@@ -239,20 +236,7 @@ public class GambleController : MonoBehaviour
         return tempSprite;
     }
 
-    //// Helper function to get the correct sprite from a sprite list based on value
-    //private Sprite GetCardSprite(Sprite[] spriteList, string value)
-    //{
-    //    switch (value.ToUpper())
-    //    {
-    //        case "A": return spriteList[0];
-    //        case "K": return spriteList[12];
-    //        case "Q": return spriteList[11];
-    //        case "J": return spriteList[10];
-    //        default:
-    //            int myval = int.Parse(value);
-    //            return spriteList[myval - 1];
-    //    }
-    //}
+    
 
     #endregion
 
@@ -266,11 +250,11 @@ public class GambleController : MonoBehaviour
         {
             allcards[i].once = false;
         }
-        if (isRepeate) socketManager.GambleDraw();
-        else socketManager.OnGamble(); // Send gamble request                                        //hh
+        if (!isRepeate) socketManager.OnGamble();
+
 
         yield return new WaitUntil(() => socketManager.isResultdone); // Wait for result
-        ComputeCards(); // Compute card sprites
+        // Compute card sprites
         gambleStart = true; // Mark gamble as started
     }
 
@@ -278,6 +262,7 @@ public class GambleController : MonoBehaviour
     IEnumerator loadingRoutine()
     {
         float fillAmount = 1;
+        yield return new WaitUntil(() => socketManager.isResultdone);
         while (fillAmount > 0.1)
         {
             fillAmount -= Time.deltaTime;
@@ -285,9 +270,8 @@ public class GambleController : MonoBehaviour
             if (fillAmount == 0.1) yield break;
             yield return null;
         }
-        yield return new WaitUntil(() => gambleStart);
         slider.fillAmount = 0;
-        yield return new WaitForSeconds(1f);
+      //  yield return new WaitForSeconds(1f);
         loadingScreen.SetActive(false);
     }
 
@@ -339,7 +323,13 @@ public class GambleController : MonoBehaviour
 
 
     }
-
+    internal void CardIntractable(bool isTrue)
+    {
+        for (int i = 0; i < allcards.Count; i++)
+        {          
+            allcards[i].Card_Button.interactable = isTrue;
+        }
+    }
     // Flip all the cards when the game ends
     internal void FlipAllCard()
     {
@@ -372,14 +362,11 @@ public class GambleController : MonoBehaviour
         }
         else
         {
+            Debug.Log("Player LOOSE   +++++++++++");
             winamount.text = "YOU LOSE\n0";
-            //  slotController.TotalWin_text.text = "0";
+           
             StartCoroutine(Collectroutine());
-            //if(!isOut)
-            //{
-            //    socketManager.OnCollect();
-            //    isOut = true;
-            //}
+            
 
         }
     }
@@ -390,11 +377,7 @@ public class GambleController : MonoBehaviour
         StartCoroutine(NewCollectRoutine());
     }
 
-    // Coroutine to handle the game over situation
-    void OnGameOver()
-    {
-        StartCoroutine(Collectroutine());
-    }
+   
 
     #endregion
 

@@ -10,6 +10,9 @@ public class CardFlip : MonoBehaviour
     [SerializeField] internal Button Card_Button;
 
     [SerializeField] private GambleController gambleController;
+    [SerializeField] private SocketIOManager socketManager;
+
+
 
     private RectTransform Card_transform;
 
@@ -26,6 +29,7 @@ public class CardFlip : MonoBehaviour
     {
         if (!once && gambleController.gambleStart)
         {
+            
             Card_transform.localEulerAngles = new Vector3(0, 180, 0);
             Card_transform.DORotate(new Vector3(0, 0, 0), 1, RotateMode.FastBeyond360);
             once = true;
@@ -40,8 +44,13 @@ public class CardFlip : MonoBehaviour
 
     private IEnumerator FlipMainObject()
     {
-        gambleController.RunOnCollect();
-        yield return new WaitUntil(() => gambleController.isResult);
+        gambleController.CardIntractable(false);
+
+        socketManager.GambleDraw();
+        yield return new WaitUntil(() => socketManager.isResultdone);
+
+        gambleController.ComputeCards();
+      //  gambleController.RunOnCollect();
         cardImage = gambleController.GetCard();
         FlipMyObject();
     }
