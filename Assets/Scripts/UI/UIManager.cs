@@ -479,7 +479,8 @@ public class UIManager : MonoBehaviour
     {
         isExit = true;
         audioController.PlayButtonAudio();
-        socketManager.CloseSocket();
+        // socketManager.CloseSocket();
+        slotManager.CallCloseSocket();
         //Application.ExternalCall("window.parent.postMessage", "onExit", "*");
     }
 }

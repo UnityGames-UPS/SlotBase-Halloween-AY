@@ -523,7 +523,11 @@ public class SocketIOManager : MonoBehaviour
                 }
         }
     }
-
+    void CloseGame()
+    {
+        Debug.Log("Unity: Closing Game");
+        StartCoroutine(CloseSocket());
+    }
     void UpdateUiOnResult(Root myData)
     {
         PlayerData = myData.player;
