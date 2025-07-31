@@ -18,7 +18,7 @@ public class CoffinGame : MonoBehaviour
     [SerializeField] private double value = 0;
 
     [SerializeField]
-    int index =0;
+    int index = 0;
     //internal bool isOpen;
 
     void Start()
@@ -71,7 +71,7 @@ public class CoffinGame : MonoBehaviour
 
         Tween tween = transform.DOShakePosition(1f, new Vector3(15, 0, 0), 30, 90, true).SetLoops(-1, LoopType.Incremental);
         yield return new WaitUntil(() => !_bonusManager.WaitForBonusResult);
-       
+
         tween.Kill();
         imageAnimation.StartAnimation();
         yield return new WaitUntil(() => !imageAnimation.isplaying);
@@ -81,6 +81,7 @@ public class CoffinGame : MonoBehaviour
         {
             audioController.PlayWLAudio("bonuswin");
             text.text = string.Concat("You Won \n\n", SocketManager.BonusData.payload.winAmount.ToString("F2"));
+            _bonusManager.setTotalWin(SocketManager.BonusData.payload.winAmount);
         }
         else
         {
@@ -92,7 +93,6 @@ public class CoffinGame : MonoBehaviour
         text.fontMaterial.SetColor(ShaderUtilities.ID_GlowColor, text_color);
         _bonusManager.isOpening = false;
 
-        _bonusManager.setTotalWin(SocketManager.BonusData.payload.winAmount);
 
         if (SocketManager.BonusData.payload.payout == 0)
         {
@@ -102,6 +102,6 @@ public class CoffinGame : MonoBehaviour
             yield return new WaitForSeconds(1f);
             _bonusManager.GameOver();
         }
-        
+
     }
 }

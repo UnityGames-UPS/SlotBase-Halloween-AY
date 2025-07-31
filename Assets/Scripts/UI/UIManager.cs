@@ -98,11 +98,15 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button CloseDisconnect_Button;
     [SerializeField] private GameObject DisconnectPopup_Object;
 
+    [Header("Disconnection Popup")]
+    [SerializeField] private GameObject ReconectingPopup_Object;
+
     [Header("AnotherDevice Popup")]
     [SerializeField] private Button CloseAD_Button;
     [SerializeField] private GameObject ADPopup_Object;
 
     [SerializeField] private Button m_AwakeGameButton;
+    [SerializeField] internal GameObject RaycastBlocker;
 
     private bool isExit = false;
     private int paginationCounter = 0;
@@ -135,10 +139,10 @@ public class UIManager : MonoBehaviour
         if (Quit_button) Quit_button.onClick.AddListener(delegate { OpenPopup(QuitPopupObject); });
 
         if (no_button) no_button.onClick.RemoveAllListeners();
-        if (no_button) no_button.onClick.AddListener(delegate { if(!isExit) ClosePopup(QuitPopupObject); });
+        if (no_button) no_button.onClick.AddListener(delegate { if (!isExit) ClosePopup(QuitPopupObject); });
 
         if (cancel_button) cancel_button.onClick.RemoveAllListeners();
-        if (cancel_button) cancel_button.onClick.AddListener(delegate { if(!isExit) ClosePopup(QuitPopupObject); });
+        if (cancel_button) cancel_button.onClick.AddListener(delegate { if (!isExit) ClosePopup(QuitPopupObject); });
 
         if (yes_button) yes_button.onClick.RemoveAllListeners();
         if (yes_button) yes_button.onClick.AddListener(CallOnExitFunction);
@@ -210,7 +214,7 @@ public class UIManager : MonoBehaviour
                 break;
 
         }
-            StartPopupAnim(amount, false);
+        StartPopupAnim(amount, false);
 
 
     }
@@ -226,7 +230,7 @@ public class UIManager : MonoBehaviour
 
         TextTween = DOTween.To(() => initAmount, (val) => initAmount = val, amount, 5f).OnUpdate(() =>
         {
-                if (Win_Text) Win_Text.text = initAmount.ToString("f2");
+            if (Win_Text) Win_Text.text = initAmount.ToString("f2");
 
         });
 
@@ -279,13 +283,14 @@ public class UIManager : MonoBehaviour
         if (audioController) audioController.PlayButtonAudio();
 
         if (Popup) Popup.SetActive(false);
-        if(!DisconnectPopup_Object.activeSelf){
+        if (!DisconnectPopup_Object.activeSelf)
+        {
 
-        if (MainPopup_Object) MainPopup_Object.SetActive(false);
+            if (MainPopup_Object) MainPopup_Object.SetActive(false);
         }
     }
 
-    internal void InitialiseUIData( Paylines symbolsText)
+    internal void InitialiseUIData(Paylines symbolsText)
     {
         PopulateSymbolsPayout(symbolsText);
     }
@@ -313,11 +318,11 @@ public class UIManager : MonoBehaviour
         {
             if (paylines.symbols[i].name.ToUpper() == "FREESPIN")
             {
-              //  if (FreeSpin_Text) FreeSpin_Text.text = paylines.symbols[i].description.ToString();
+                //  if (FreeSpin_Text) FreeSpin_Text.text = paylines.symbols[i].description.ToString();
             }
             if (paylines.symbols[i].name.ToUpper() == "SCATTER")
             {
-               // if (Scatter_Text) Scatter_Text.text = paylines.symbols[i].description.ToString();
+                // if (Scatter_Text) Scatter_Text.text = paylines.symbols[i].description.ToString();
             }
             if (paylines.symbols[i].name.ToUpper() == "JACKPOT")
             {
@@ -341,7 +346,7 @@ public class UIManager : MonoBehaviour
         if (type)
         {
             paginationCounter++;
-            if(paginationCounter >= PageList.Length - 1)
+            if (paginationCounter >= PageList.Length - 1)
             {
                 NextPrevButton(1);
             }
@@ -353,7 +358,7 @@ public class UIManager : MonoBehaviour
         else
         {
             paginationCounter--;
-            if(paginationCounter <= 0)
+            if (paginationCounter <= 0)
             {
                 NextPrevButton(0);
             }
@@ -390,10 +395,10 @@ public class UIManager : MonoBehaviour
 
     internal void ADfunction()
     {
-        OpenPopup(ADPopup_Object); 
+        OpenPopup(ADPopup_Object);
     }
 
-    internal void DisconnectionPopup(bool isReconnection)
+    internal void DisconnectionPopup()
     {
         //if (isReconnection)
         //{
@@ -401,7 +406,7 @@ public class UIManager : MonoBehaviour
         //}
         //else
         //{
-        //ClosePopup(ReconnectPopup_Object);
+        //    ClosePopup(ReconnectPopup_Object);
         if (!isExit)
         {
             OpenPopup(DisconnectPopup_Object);
@@ -411,11 +416,11 @@ public class UIManager : MonoBehaviour
 
     private void GoToPage(int index)
     {
-        if(index < PageList.Length)
+        if (index < PageList.Length)
         {
-            for(int i = 0; i < PageList.Length; i++)
+            for (int i = 0; i < PageList.Length; i++)
             {
-                if(i == index)
+                if (i == index)
                 {
                     PageList[i].SetActive(true);
                 }
@@ -445,7 +450,24 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
+    internal void CheckAndClosePopups()
+    {
 
+        if (ReconectingPopup_Object.activeInHierarchy)
+        {
+            ClosePopup(ReconectingPopup_Object);
+        }
+        if (DisconnectPopup_Object.activeInHierarchy)
+        {
+            ClosePopup(DisconnectPopup_Object);
+        }
+    }
+
+
+    internal void ReconnectionPopup()
+    {
+        OpenPopup(ReconectingPopup_Object);
+    }
     private void ResetInfoUI()
     {
         paginationCounter = 0;
