@@ -237,7 +237,7 @@ public class SlotBehaviour : MonoBehaviour
         if (Lines_text) Lines_text.text = SocketManager.InitialData.lines[LineCounter].ToString();
         // PayCalculator.SetButtonActive(SocketManager.InitialData.lines[LineCounter]);         //hh
         if (TotalBet_text) TotalBet_text.text = (SocketManager.InitialData.bets[BetCounter] * SocketManager.InitialData.lines.Count).ToString();
-        if (TotalWin_text) TotalWin_text.text = 0.ToString("f2");
+        if (TotalWin_text) TotalWin_text.text = 0.ToString("f3");
         if (Balance_text) Balance_text.text = SocketManager.PlayerData.balance.ToString();
         if (BetperLine_text) BetperLine_text.text = (SocketManager.InitialData.bets[BetCounter]).ToString();
         currentBalance = SocketManager.PlayerData.balance;
