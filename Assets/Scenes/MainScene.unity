@@ -7170,7 +7170,7 @@ MonoBehaviour:
   bonusController: {fileID: 629985136}
   JSManager: {fileID: 1476692586}
   TestSocketURI: http://localhost:5000/
-  testToken: c73b2de747b74f76992e048b726b6f29
+  testToken: 26e628a7bbfb485caea248ef00fef7b0
 --- !u!1 &500088832
 GameObject:
   m_ObjectHideFlags: 0

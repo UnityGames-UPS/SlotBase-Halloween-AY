@@ -163,7 +163,7 @@ public class SlotBehaviour : MonoBehaviour
     internal bool WasAutoSpinOn = false;
     private float SpinDelay = 0.2f;
     private Sprite turboOriginalSprite;
-    private Tween ScoreTween;
+
 
     private void Start()
     {
@@ -584,10 +584,6 @@ public class SlotBehaviour : MonoBehaviour
         double initAmount = balance;
         balance = balance - bet;
 
-        ScoreTween = DOTween.To(() => initAmount, (val) => initAmount = val, balance, 0.8f).OnUpdate(() =>
-        {
-            if (Balance_text) Balance_text.text = initAmount.ToString("f3");
-        });
 
 
 
@@ -700,7 +696,7 @@ public class SlotBehaviour : MonoBehaviour
 
         yield return new WaitUntil(() => !CheckPopups);
 
-        ScoreTween?.Kill();
+
         if (TotalWin_text) TotalWin_text.text = SocketManager.ResultData.payload.winAmount.ToString("f3");
         if (Balance_text) Balance_text.text = SocketManager.PlayerData.balance.ToString("f3");
         CheckAndActivateGamble();
@@ -733,7 +729,7 @@ public class SlotBehaviour : MonoBehaviour
 
     void CheckAndActivateGamble()
     {
-        if (SocketManager.ResultData.payload.winAmount > 0)
+        if (SocketManager.ResultData.payload.winAmount > 0 && !IsAutoSpin)
         {
             gambleController.gambleAmount = SocketManager.ResultData.payload.winAmount;
             gambleController.toggleDoubleButton(true);
