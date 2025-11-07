@@ -165,6 +165,23 @@ public class SlotBehaviour : MonoBehaviour
     private Sprite turboOriginalSprite;
 
 
+    public static List<List<int>> initialGrid = new List<List<int>>()
+    {
+        new List<int>() { 8, 0, 7},
+        new List<int>() { 10, 8, 7},
+        new List<int>() { 10, 7, 10},
+        new List<int>() { 10, 8, 7},
+        new List<int>() { 8, 10, 7}
+    };
+    public static List<List<int>> initialAnimGrid = new List<List<int>>()
+    {
+        new List<int>() { 10, 10, 10},
+        new List<int>() { 10, 10, 10},
+        new List<int>() { 10, 10, 10},
+        new List<int>() { 10, 10, 10},
+        new List<int>() { 10, 10, 10}
+    };
+
     private void Start()
     {
 
@@ -207,6 +224,30 @@ public class SlotBehaviour : MonoBehaviour
         tweenHeight = (15 * IconSizeFactor) - 280;
         turboOriginalSprite = Turbo_Button.GetComponent<Image>().sprite;
     }
+    internal void shuffleInitialMatrix()
+    {
+        Debug.Log("Suffling------------------");
+        for (int i = 0; i < Tempimages.Count; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                PopulateAnimationSprites(Tempimages[i].slotImages[j].transform.GetComponent<ImageAnimation>(), initialGrid[i][j]);
+                Tempimages[i].slotImages[j].transform.GetComponent<Image>().sprite = myImages[initialGrid[i][j]];
+            }
+        }
+        for (int i = 0; i < Tempimages.Count; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                Debug.Log(i + "--------" + initialAnimGrid[i][j] + "----------" + j);
+                if (initialAnimGrid[i][j] > 0)
+                {
+                    Debug.Log(initialAnimGrid[i][j]);
+                    StartGameAnimation(Tempimages[i].slotImages[j].gameObject);
+                }
+            }
+        }
+    }
 
     internal void AutoSpin()
     {
@@ -236,9 +277,9 @@ public class SlotBehaviour : MonoBehaviour
         LineCounter = SocketManager.InitialData.lines.Count - 1;
         if (Lines_text) Lines_text.text = SocketManager.InitialData.lines[LineCounter].ToString();
         // PayCalculator.SetButtonActive(SocketManager.InitialData.lines[LineCounter]);         //hh
-        if (TotalBet_text) TotalBet_text.text = (SocketManager.InitialData.bets[BetCounter] * SocketManager.InitialData.lines.Count).ToString();
+        if (TotalBet_text) TotalBet_text.text = (SocketManager.InitialData.bets[BetCounter] * SocketManager.InitialData.lines.Count).ToString("f3");
         if (TotalWin_text) TotalWin_text.text = 0.ToString("f3");
-        if (Balance_text) Balance_text.text = SocketManager.PlayerData.balance.ToString();
+        if (Balance_text) Balance_text.text = SocketManager.PlayerData.balance.ToString("f3");
         if (BetperLine_text) BetperLine_text.text = (SocketManager.InitialData.bets[BetCounter]).ToString();
         currentBalance = SocketManager.PlayerData.balance;
         currentTotalBet = SocketManager.InitialData.bets[BetCounter] * SocketManager.InitialData.lines.Count;
@@ -515,21 +556,21 @@ public class SlotBehaviour : MonoBehaviour
     }
 
 
-    internal void shuffleInitialMatrix()
-    {
-        for (int i = 0; i < Tempimages.Count; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                int randomIndex = UnityEngine.Random.Range(0, 11);
-                Tempimages[i].slotImages[j].sprite = myImages[randomIndex];
-            }
-        }
-    }
+    // internal void shuffleInitialMatrix()
+    // {
+    //     for (int i = 0; i < Tempimages.Count; i++)
+    //     {
+    //         for (int j = 0; j < 3; j++)
+    //         {
+    //             int randomIndex = UnityEngine.Random.Range(0, 11);
+    //             Tempimages[i].slotImages[j].sprite = myImages[randomIndex];
+    //         }
+    //     }
+    // }
 
     private IEnumerator TweenRoutine()
     {
-
+        currentBalance = SocketManager.PlayerData.balance;
         if (currentBalance < currentTotalBet)
         {
             CompareBalance();
@@ -793,7 +834,7 @@ public class SlotBehaviour : MonoBehaviour
 
     private void CompareBalance()
     {
-        if (currentBalance < currentTotalBet)
+        if (SocketManager.PlayerData.balance < currentTotalBet)
         {
             uiManager.LowBalPopup();
             //if (AutoSpin_Button) AutoSpin_Button.interactable = false;
